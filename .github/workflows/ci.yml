@@ -5,6 +5,9 @@ on:
     branches: [ "kolosov" ]
   pull_request:
     branches: [ "kolosov" ]
+  schedule:
+    - cron: '30 12 * * 3' # Каждую среду в 12:30
+    - cron: '0 22 * * 5'   # Каждую пятницу в 22:00
 
 jobs:
   build:
@@ -17,10 +20,10 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          java-version: '17' 
+          java-version: '17' # Укажите нужную версию Java
 
       - name: Build with Gradle
-        run: ./gradlew build 
+        run: ./gradlew build
 
       - name: Run tests
-        run: ./gradlew test 
+        run: ./gradlew test
