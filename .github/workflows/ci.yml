@@ -28,15 +28,14 @@ jobs:
         with:
           java-version: ${{ matrix.java-version }}
 
-      - name: Build with Gradle
-        run: ./gradlew build
-        
       - name: Set up Gradle
         run: |
           wget https://services.gradle.org/distributions/gradle-8.5-bin.zip
           unzip gradle-8.5-bin.zip -d /opt/gradle
-          export PATH=$PATH:/opt/gradle/gradle-8.5/bin
+          echo "/opt/gradle/gradle-8.5/bin" >> $GITHUB_PATH
 
+      - name: Build with Gradle
+        run: ./gradlew build
 
       - name: Run tests
         run: ./gradlew test
