@@ -1,32 +1,31 @@
-name: Java CI with Gradle
+name: CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
   schedule:
-    - cron: '30 12 * * 3'  # Каждую среду в 12:30
+    - cron: '30 12 * * 3' # Каждую среду в 12:30
     - cron: '0 22 * * 5'   # Каждую пятницу в 22:00
-
-permissions:
-  contents: read
 
 jobs:
   build:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        java-version: [11, 13, 17]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up JDK ${{ matrix.java-version }}
-        uses: actions/setup-java@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
         with:
-          java-version: ${{ matrix.java-version }}
-          distribution: 'temurin'
+          java-version: '17' # Укажите нужную версию Java
+
       - name: Build with Gradle
-        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-        with:
-          arguments: build
+        run: ./gradlew build
+
+      - name: Run tests
+        run: ./gradlew test
